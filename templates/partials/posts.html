@@ -1,0 +1,101 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-6">
+        <form action="/posts/search" method="GET" class="flex items-center space-x-2">
+            <input type="text" name="query" placeholder="Поиск по заголовку или содержимому"
+                   class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                   value="{{ request.query_params.get('query', '') }}">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Поиск
+            </button>
+        </form>
+    </div>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Новости</h1>
+        <a href="/posts/create" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Создать новый пост
+        </a>
+    </div>
+
+    {% for post in posts %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <!-- Блок с изображением -->
+        <div class="w-full h-64 bg-gray-100">
+            {% if post.images %}
+                <img class="w-full h-full object-cover" 
+                     src="{{ post.images[0].url }}" 
+                     alt="{{ post.title }}">
+            {% else %}
+                <img class="w-full h-full object-cover" 
+                     src="https://images.placeholders.dev/1280x720" 
+                     alt="Default news image">
+            {% endif %}
+        </div>
+
+        <!-- Контент новости -->
+        <div class="p-6">
+            <!-- Заголовок -->
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ post.title }}</h1>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">
+                            {{ post.created_at }}
+                        </span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        {% if post.owner %}
+                        <span class="text-sm text-indigo-600 font-medium">
+                            Автор: {{ post.owner.first_name }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Кнопки -->
+                {% if current_user.id == post.owner_id %}
+                <div class="flex space-x-2">
+                    <a href="/posts/{{ post.id }}/edit" 
+                       class="px-3 py-1 bg-blue-100 text-blue-600 rounded-md 
+                              hover:bg-blue-200 transition-colors text-sm">
+                        Изменить
+                    </a>
+                    <form action="/posts/{{ post.id }}/delete" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот пост?')">
+                        <button type="submit" 
+                                class="px-3 py-1 bg-red-100 text-red-600 rounded-md 
+                                       hover:bg-red-200 transition-colors text-sm">
+                            Удалить
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Основной текст -->
+            <div class="prose max-w-none mb-6">
+                {{ post.content|safe }}
+            </div>
+
+            <!-- Галерея изображений -->
+            {% if post.images|length > 1 %}
+            <div class="grid grid-cols-3 gap-2 mt-4">
+                {% for image in post.images %}
+                <div class="aspect-square">
+                    <img class="w-full h-full object-cover rounded" 
+                         src="{{ image.url }}" 
+                         alt="Image {{ loop.index }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">Новостей пока нет</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

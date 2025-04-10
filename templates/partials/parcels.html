@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div class="flex items-center justify-between mb-4">
+        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Parcels</h5>
+    </div>
+    <div class="flow-root">
+        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- items start   -->
+            {% for parcel in parcels %}
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center">
+                        <!-- one item  -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                ID:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.id }}   
+                        </div>
+                    </div> 
+                    <div class="flex items-center">
+                        <!-- code  -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Cadastral Code:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-c enter text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.cadastral_code }}   
+                        </div>  
+                    </div>
+                    <div class="flex items-center">
+                        <!-- longtitude  -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Longitude:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-c enter text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.longitude }}   
+                        </div>  
+                    </div>
+                    <div class="flex items-center">
+                        <!-- latitude  -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Latitude:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-c enter text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.latitude }}   
+                        </div>  
+                    </div>
+                    <div class="flex items-center">
+                        <!-- cad cost  -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Cadastral cost:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-c enter text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.cad_cost }}   
+                        </div>  
+                    </div>
+                    <div class="flex items-center">
+                        <!-- description -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Description:
+                            </p>
+                        </div>
+                        <div class="inline-flex items-c enter text-base font-semibold text-gray-900 dark:text-white">
+                            {{ parcel.description }}   
+                        </div>  
+                    </div>
+
+                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                        {{ parcel.owner_id }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+
